@@ -1,0 +1,4 @@
+RMS Roll:       0.15 +/- 0.01 deg
+Contact Loss:   0.039 +/- 0.005
+Synchrony:      0.633 +/- 0.037
+Instability:    0/30 runs detected onset

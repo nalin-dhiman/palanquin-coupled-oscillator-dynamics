@@ -1,0 +1,28 @@
+{
+  "start_time_steady_s": 15.0,
+  "y_mean_m": 0.8414027140988752,
+  "rms_y_m": 0.03962158457366718,
+  "p2p_y_m": 0.14529398915069214,
+  "rms_roll_deg": 0.15571571859215394,
+  "rms_pitch_deg": 0.07382272835722399,
+  "growth_ratio_y": 0.5340502426747611,
+  "contact_loss_avg": 0.04215542521994135,
+  "envelope_growth_rate": -0.022722667943793837,
+  "peak_freq_hz": 1.9550342130987293,
+  "H2_ratio": 0.07561227672045914,
+  "synchrony_index": 0.6258399527751848,
+  "contact_loss_per_carrier": [
+    0.04618768328445748,
+    0.03812316715542522
+  ],
+  "Fy_mean_per_carrier_N": [
+    293.94275690865555,
+    293.9099676176227
+  ],
+  "Fy_std_per_carrier_N": [
+    172.2090022694335,
+    172.97130089786097
+  ],
+  "time_roll_excess_s": 0.0,
+  "uncontrolled_onset_time": -1.0
+}
