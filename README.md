@@ -68,8 +68,4 @@ Parameter sweeps, ablations, and regime mapping are provided.
 
 ---
 
-## How to Run (Minimal)
-
-```bash
-python simulation/run_simulation.py --config configs/music_entrain.yaml
 
