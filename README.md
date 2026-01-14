@@ -58,14 +58,6 @@ The coupled system consists of:
 
 ---
 
-## Repository Structure
-
-- `paper/` – manuscript PDF and LaTeX
-- `model/` – mathematical components
-- `simulation/` – numerical experiments
-- `analysis/` – synchrony, spectra, regime maps
-- `configs/` – reproducible parameter sets
-- `docs/` – assumptions, limitations, falsification
 
 ---
 
@@ -73,8 +65,6 @@ The coupled system consists of:
 
 This work is intended as a **mechanistic plausibility generator**.
 Parameter sweeps, ablations, and regime mapping are provided.
-
-No empirical data are included.
 
 ---
 
