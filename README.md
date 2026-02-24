@@ -5,7 +5,6 @@ This repository accompanies the paper:
 
 **“The Rath Dynamics of the Himalayas:  
 A Physics-First Account of Coupled Oscillators and Beat Entrainment in Deity Palanquins”**  
-Nalin Dhiman (IIT Mandi, 2026)
 
 The project presents a fully specified *mechanistic model* showing that observed palanquin
 motions (jumping, rocking, synchrony shifts, harmonic structure) can arise from:
