@@ -67,4 +67,11 @@ Parameter sweeps, ablations, and regime mapping are provided.
 
 ---
 
+## Citation
+
+If you use this work, please cite:
+
+Dhiman, N. (2026). The Physics of the Dancing Deity: Coupled Oscillators in Himalayan Processions.
+arXiv:2601.12872.
+https://doi.org/10.48550/arXiv.2601.12872
 
