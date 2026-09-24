@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "parameters": {
+    "mass_kg": 40.0,
+    "inertia_kg_m2": 8.0,
+    "half_span_m": 0.5,
+    "com_height_above_support_m": 0.15,
+    "stiffness_N_m": 8000.0,
+    "damping_N_s_m": 250.0,
+    "gravity_m_s2": 9.81,
+    "equilibrium_com_height_m": 1.5,
+    "feedback_filter_s": 0.08,
+    "feedback_gain_m_N_s": 5e-05,
+    "feedback_return_s": 1.0,
+    "feedback_displacement_limit_m": 0.006,
+    "feedback_rate_limit_m_s": 0.02
+  },
+  "input": {
+    "input_kind": "periodic",
+    "frequency_hz": 1.5,
+    "amplitudes_m": [
+      0.004,
+      0.004
+    ],
+    "phases_rad": [
+      0.0,
+      1.0471975511965976
+    ],
+    "feedback": false,
+    "initial_roll_rad": 0.0,
+    "ramp_s": 2.0
+  },
+  "numerics": {
+    "duration_s": 30,
+    "dt_s": 0.001,
+    "sample_dt_s": 0.01,
+    "analysis_start_s": 4
+  }
+}
