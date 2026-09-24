@@ -1,0 +1,81 @@
+{
+  "sha256": "5b950d13dad79d1eb904a0fc1fa0bb97d767d3d589f2dd99f5aa8517d8c69a88",
+  "files": [
+    {
+      "path": ".nojekyll",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "assets/rath.glb",
+      "sha256": "109d012f4aee31861a82b36f595e626ab2014a82fe33102a89db275404ba65d2"
+    },
+    {
+      "path": "assets/rath_geometry.json",
+      "sha256": "3df10ee28650c603793be35d068c6f84ad0741e7cad978b2ef5d78400fe0cb23"
+    },
+    {
+      "path": "default-config.json",
+      "sha256": "1ed1939ddb37a172067d6bf4a3058de134679eac9bf2a8225502024e2bf5d5f7"
+    },
+    {
+      "path": "index.html",
+      "sha256": "50bc509fc89240a25246c50916ba0dc9886b211a235db52262ae436ff15ecd3f"
+    },
+    {
+      "path": "src/app.js",
+      "sha256": "5d61c3fa6832d3eb63c3c2eee42b7a6869a9f7ec5e0339ad29cc50ea9082ee4e"
+    },
+    {
+      "path": "src/model.js",
+      "sha256": "994d71a9142735d9afd4095e04ff0a8c0955ca17ed9878cc03e7556b2420ed3d"
+    },
+    {
+      "path": "src/simulation.js",
+      "sha256": "a5507fbc961c898c1a42494974be8e2f7992fed6ae0e1f0e3e09eb6651402a2a"
+    },
+    {
+      "path": "src/viewer.js",
+      "sha256": "600bd81e22885e497c073dd5aee5e5557c0ae420eb6de96a5e6bcaa055b3b191"
+    },
+    {
+      "path": "src/walking.js",
+      "sha256": "4eafb583f7729a1d97d91a28ad29f88189842b94f3ae34d5d8dfe7c740eb71c4"
+    },
+    {
+      "path": "src/worker.js",
+      "sha256": "4d2147a1d6439388786e12f1ac559c1924643c9530d42073340bb4d388dcc33d"
+    },
+    {
+      "path": "style.css",
+      "sha256": "56b375f9445fddb981f88717db019de697b0e293d34e5dc9d945051d09b3fd03"
+    },
+    {
+      "path": "vendor/three/LICENSE",
+      "sha256": "bfe119ea4fd413f5f7ca3fcd63adb0c4a073ed39daa2fe7d3e6b769e21272601"
+    },
+    {
+      "path": "vendor/three/addons/controls/OrbitControls.js",
+      "sha256": "b97879c748170baadeb3fb84cea1ffdf4674e283dc06042f34e2acb95a76042c"
+    },
+    {
+      "path": "vendor/three/addons/loaders/GLTFLoader.js",
+      "sha256": "67ac5551fdafa6e349bd80c8f8e5e39c136d6b2fb1ad647db9abb21dc86f9e4a"
+    },
+    {
+      "path": "vendor/three/addons/utils/BufferGeometryUtils.js",
+      "sha256": "fda7e946b8e0b5ab39b779206589e7a1079a22eb24efb89d7223e03fdfb1f751"
+    },
+    {
+      "path": "vendor/three/three.core.js",
+      "sha256": "eb077d2417f61d3e6d9264c317cabc4ea35769ed6b0ab533067292a550784c20"
+    },
+    {
+      "path": "vendor/three/three.module.js",
+      "sha256": "c8211c69345d2e9949dc7a8ac969380497aa0600a5a8ac6a459c8cd02dd9cb8a"
+    },
+    {
+      "path": "walking-default-config.json",
+      "sha256": "da98d714246fbe2199e16db915280672b6c5156f9cf2f976df1f054bd0d02067"
+    }
+  ]
+}
