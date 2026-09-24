@@ -8,7 +8,7 @@ export const PARAMS = {
 };
 export const IRREGULAR = {irregular_frequencies_hz:[.45,.9,1.7],irregular_amplitudes_m:[[.0008,.0006,.0004],[.0007,.00065,.00045]],irregular_phases_rad:[[.2,2,4.1],[1.1,3.2,5]]};
 export function preset(name='offset') {
- const config={schema_version:1,parameters:{...PARAMS},input:{input_kind:'periodic',frequency_hz:1.5,amplitudes_m:[.004,.004],phases_rad:[0,Math.PI/3],feedback:false,initial_roll_rad:0,ramp_s:2},numerics:{duration_s:30,dt_s:.001,sample_dt_s:.01,analysis_start_s:4}};
+ const config={schema_version:1,parameters:{...PARAMS},input:{input_kind:'periodic',frequency_hz:1.5,amplitudes_m:[.004,.004],phases_rad:[0,Math.PI/3],feedback:false,initial_roll_rad:0,ramp_s:2},numerics:{duration_s:120,dt_s:.001,sample_dt_s:.01,analysis_start_s:4}};
  if(name==='in-phase'){config.input.phases_rad=[0,0];config.input.initial_roll_rad=Math.PI/360;}
  if(name==='feedback')config.input.feedback=true;
  if(name==='irregular')Object.assign(config.input,structuredClone(IRREGULAR),{input_kind:'irregular'});

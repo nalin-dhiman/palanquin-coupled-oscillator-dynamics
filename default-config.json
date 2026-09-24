@@ -31,7 +31,7 @@
     "ramp_s": 2.0
   },
   "numerics": {
-    "duration_s": 30,
+    "duration_s": 120,
     "dt_s": 0.001,
     "sample_dt_s": 0.01,
     "analysis_start_s": 4
