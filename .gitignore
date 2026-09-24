@@ -23,3 +23,6 @@ outputs/
 *.zip
 *.pem
 *.key
+
+# Reviewed screenshots used by the repository documentation.
+!/docs/images/*.png
