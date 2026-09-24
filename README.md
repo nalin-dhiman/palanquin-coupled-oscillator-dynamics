@@ -1,62 +1,67 @@
 # Rath Dynamics Lab
 
-**See how the timing of two supports changes the bounce and tilt of a carried rath.**
-
-This project is an interactive physics demonstration of a rath, a ceremonial structure carried on poles. The model represents the carriers with two moving supports. You can change their timing, the weight of the load and other settings, then watch the motion and the forces change.
+**Change the walking rhythm. Watch a carried rath bounce, rock sideways and tilt forwards.**
 
 **[Open the interactive simulation →](https://nalin-dhiman.github.io/palanquin-coupled-oscillator-dynamics/)**
 
-It runs in your browser, on a computer or phone. No installation or account is needed.
+A rath is a ceremonial structure carried on poles. This browser simulation represents the carriers with four moving shoulder contacts: front left, front right, rear left and rear right. Change their timing and see how the load moves and how its weight is shared.
 
-![The live simulation showing the rath, adjustable settings, playback controls and graphs of motion and support forces.](docs/images/simulation-overview.png)
+Live mode calculates new motion while you watch. It works on a computer or phone, without an account or installation. A run lasts **two minutes by default**, with a maximum of three minutes.
 
-*The app with its default settings. The controls are on the left; the rath, results and graphs are on the right. Open the image to see the details.*
+![Walking simulator with the rath, cadence controls, separate heave/roll/pitch readouts, four contact loads and graphs.](docs/images/simulation-overview.png)
+
+*The walking model with drifting front/rear rhythms. This screenshot shows a completed 24-second comparison, paused for inspection. The default interactive run lasts 120 seconds.*
 
 ## Try it in a minute
 
-1. Open the simulation and choose **In phase**: both supports move up and down together.
-2. Choose **60° offset**: one support moves later than the other. Compare the bounce and tilt.
-3. Change a setting, such as **Mass**, **Frequency** or **Right amplitude**, then select **Run simulation**.
-4. Drag the 3D view to look around the rath. Pause the animation or move the time slider to inspect a moment.
-5. Select **Download CSV** to save the numbers, or open **Import / export configuration** to save and reuse your settings.
+1. Start with **Roll + pitch**. Watch the rath and the four load readings.
+2. Try **Up / down**, **Sideways tilt**, and **Front / back tilt** to see what each kind of support input does. The camera changes for the tilt examples.
+3. Change the front or rear **step cadence** or **stride phase**. With automatic application enabled, each edit restarts the simulation from its initial state.
+4. Use **Contacts & forces** to see the actual numerical contact geometry. Try **Roll · front view**, **Pitch · side view**, or **Contact layout**.
+5. If the movement is hard to see, choose **Magnified · 3×** or **5×**. These views are labelled: the readouts, graphs and exports always retain the actual physical values.
+6. Pause to inspect recorded motion. Choose **Calculate full run** to calculate the whole duration immediately, then seek anywhere or export the full CSV.
 
-Each run lasts **two minutes by default**. Open **Duration & numerical controls** to choose a different length, up to **three minutes**. On a phone, tap **Show all parameters** to reveal the controls.
+On a phone, tap **Show all parameters**. Under **Save, share or import settings**, export/import JSON or copy a link that opens the same settings. CSV contains only the part calculated so far unless you finish the run first.
 
-## What can you compare?
+## What can you change?
 
-| App preset | In plain words |
+| Controls | What they do |
 | --- | --- |
-| **In phase** | Both supports follow the same rhythm at the same time. |
-| **60° offset** | One support follows the same rhythm with a timing difference. |
-| **Load yielding** | Each support adjusts slightly in response to the force it carries. |
-| **Irregular** | Several rhythms are mixed together to produce less regular support movement. |
+| Front/rear cadence and stride phase | Change how quickly the carriers step and their relative timing. A stride contains two steps. |
+| Vertical bounce and torso tilt | Change the prescribed shoulder heights; torso tilt creates a left/right height difference. |
+| Phase variation | Let the rhythm vary smoothly instead of staying perfectly periodic. |
+| Mass, spacing, centre of mass and inertia | Change the assumed load and contact geometry. |
+| Contact stiffness and damping | Change the compliance at each contact. Contacts can unload or separate. |
+| Initial angles, duration and integration step | Explore starting conditions and numerical sensitivity. |
+| Camera, speed and magnification | Change the presentation without changing the computed trajectory. |
 
-You can also change the load's mass, how far apart the supports are, how soft or stiff they are, and how much and how quickly they move. The advanced controls expose the remaining model settings; the full JSON configuration lets you edit every part of the irregular input.
+## Compare four contacts with two supports
 
-## See the supports and forces
+The **Pitch comparison** control has three options:
 
-The **Rath illustration** view shows the detailed shape. Switch to **Analytical body** to see the simplified load used by the calculation: a block, two contact points and arrows showing upward support forces.
+- **Four contacts · free pitch:** the body can move vertically, roll and pitch.
+- **Four contacts · locked pitch:** the same four contacts act on a body whose pitch is constrained.
+- **Two averaged resultants:** front and rear support inputs are averaged before calculating contact forces; pitch is constrained. Individual shoulder loads are unresolved, so their peak is hidden in the interface.
 
-![The analytical view showing a simplified load, two contact points and upward force arrows.](docs/images/support-forces.png)
+Try **Hidden loads**. Individual shoulder forces can vary strongly even when there is almost no net rocking. A small tilt does not necessarily mean evenly shared loads.
 
-*The coloured lines mark the prescribed support positions. The arrows show the calculated upward forces. Both views display the same computed motion.*
+![The contact model showing the numerical body, four coloured contacts and upward force arrows.](docs/images/support-forces.png)
 
-The movement is shown at its calculated size, so it can look small. The graphs make these small changes easier to see:
+*The four colours match the load cards and graphs. Bars mark the undeformed support references; they are not solid pads. Upward arrows show computed forces. Zero force means the contact is not transmitting load, either because it has separated or because its force has been clipped during unloading.*
 
-- **Heave** means the load moving up and down.
-- **Roll** means the load tilting from side to side.
-- **Support force** means how strongly each support pushes upward on the load.
-- **Contact loss** means a support has stopped pushing on the load at that moment.
+The **Original · two effective supports** model remains available for comparison, including its load-yielding and irregular-input examples. Those supports represent pole sides, not two feet.
 
-## What the model represents
+## What this simulation can—and cannot—tell you
 
-This is a simplified simulation with assumed physical properties. The rath's real dimensions, mass and balance have not been measured for this model. Its decorative shape is an illustration of the calculated motion.
+**Heave** is up/down movement. **Roll** is sideways tilt. **Pitch** is forward/backward tilt. Pitch does not mean travelling forwards or backwards across the ground.
 
-The calculation covers vertical movement, sideways tilt and support forces. Walking, pole bending and cloth movement are outside its scope. Automated checks compare the browser calculation with the Python version and verify that the displayed 3D position and rotation match the saved numbers.
+The walking inputs are prescribed shoulder motions. The model does not solve feet, legs, horizontal travel, horizontal contact forces, yaw, pole bending, adaptive gait or human intention. The dimensions, inertia and compliance are assumed, not measurements of ritual carriers or a specific rath. The decorative mesh illustrates the solved pose; its shape does not set the mechanical parameters.
 
-## Run it on your computer
+The browser solver is checked against an independent Python implementation for **21 walking comparisons**, as well as the original reference cases. Browser checks verify **120 randomly selected poses**, four contact positions and all **39 mesh component origins**. This establishes implementation consistency, not validation against people. Large forcing with contact opening needs extra care: recontact force spikes can depend on the integration step.
 
-With Node.js 18 or later and Python 3 installed, run these commands from the repository folder:
+## Run locally
+
+With Node.js 18 or later and Python 3:
 
 ```bash
 npm ci --ignore-scripts
@@ -65,20 +70,16 @@ npm run build
 python3 -m http.server 8080 --directory dist
 ```
 
-Open [localhost:8080](http://localhost:8080).
-
-The **[technical guide](docs/technical-guide.md)** explains the equations, verification checks, Python environment, website publishing and how to rebuild the two-minute Blender video. For future website updates, `npm run deploy` tests, builds and publishes the app.
-
-## Where things live
+Open [localhost:8080](http://localhost:8080). See the [technical guide](docs/technical-guide.md) for equations, reproducibility, a project-local Python `.venv`, browser testing and publishing. The existing Blender video tools reproduce the original two-support comparison; this update does not relabel that video as a walking simulation.
 
 | Folder | Contents |
 | --- | --- |
-| `web/` | The interactive app and original 3D rath asset. |
-| `python/` | The reference simulation and tools for rebuilding the mesh and video. |
-| `scripts/` | Build, deployment and browser-check scripts. |
-| `tests/` | Numerical checks and reference samples. |
-| `docs/` | App screenshots and the technical guide. |
+| `web/` | Interactive app, both solvers and original rath asset. |
+| `python/` | Independent reference solvers, tests and existing mesh/video tools. |
+| `scripts/` | Build, browser checks, release checks and deployment. |
+| `tests/` | Cross-language numerical fixtures and tests. |
+| `docs/` | Screenshots, technical guide and verification summary. |
 
-`interactive-main` is the default source branch. The previous `main` branch retains the earlier implementation. `interactive-site` contains the published website. The screenshots above come from the live app; manuscript files and generated simulation videos are excluded from this branch.
+`interactive-main` is the source branch; `interactive-site` holds the published website. The previous `main` branch is preserved. Only code, app assets and documentation are published; manuscripts, PDFs, TeX files and generated videos are excluded.
 
 Original code is available under the [MIT license](LICENSE). Three.js retains its own MIT license.

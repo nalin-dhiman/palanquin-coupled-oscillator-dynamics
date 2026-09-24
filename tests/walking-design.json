@@ -1,0 +1,250 @@
+{
+  "version": "walking-extension-1",
+  "parameters": {
+    "mass": 40.0,
+    "inertia_roll": 8.0,
+    "inertia_pitch": 16.0,
+    "inertia_yaw": 20.0,
+    "half_width": 0.5,
+    "half_length": 0.75,
+    "com_height": 0.15,
+    "stiffness": 4000.0,
+    "damping": 125.0,
+    "gravity": 9.81,
+    "z0": 1.5
+  },
+  "cases": {
+    "G0": {
+      "step_hz": [
+        2.0,
+        2.0
+      ],
+      "vertical_m": [
+        0.02,
+        0.02
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.026179938779914945
+      ],
+      "stride_phase_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    },
+    "G90": {
+      "step_hz": [
+        2.0,
+        2.0
+      ],
+      "vertical_m": [
+        0.02,
+        0.02
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.026179938779914945
+      ],
+      "stride_phase_rad": [
+        0.0,
+        1.5707963267948966
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    },
+    "G180": {
+      "step_hz": [
+        2.0,
+        2.0
+      ],
+      "vertical_m": [
+        0.02,
+        0.02
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.026179938779914945
+      ],
+      "stride_phase_rad": [
+        0.0,
+        3.141592653589793
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    },
+    "Gvar": {
+      "step_hz": [
+        2.0,
+        2.04
+      ],
+      "vertical_m": [
+        0.02,
+        0.016
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.020943951023931952
+      ],
+      "stride_phase_rad": [
+        0.0,
+        1.5707963267948966
+      ],
+      "phase_mod_rad": [
+        0.08,
+        0.08
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        1.0471975511965976
+      ],
+      "ramp_s": 2.0
+    },
+    "Gstress": {
+      "step_hz": [
+        2.33,
+        2.33
+      ],
+      "vertical_m": [
+        0.035,
+        0.035
+      ],
+      "tilt_rad": [
+        0.05235987755982989,
+        0.05235987755982989
+      ],
+      "stride_phase_rad": [
+        0.0,
+        3.141592653589793
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    },
+    "G90slow": {
+      "step_hz": [
+        1.83,
+        1.83
+      ],
+      "vertical_m": [
+        0.02,
+        0.02
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.026179938779914945
+      ],
+      "stride_phase_rad": [
+        0.0,
+        1.5707963267948966
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    },
+    "G90fast": {
+      "step_hz": [
+        2.33,
+        2.33
+      ],
+      "vertical_m": [
+        0.02,
+        0.02
+      ],
+      "tilt_rad": [
+        0.026179938779914945,
+        0.026179938779914945
+      ],
+      "stride_phase_rad": [
+        0.0,
+        1.5707963267948966
+      ],
+      "phase_mod_rad": [
+        0.0,
+        0.0
+      ],
+      "phase_mod_hz": 0.25,
+      "phase_mod_offset_rad": [
+        0.0,
+        0.0
+      ],
+      "ramp_s": 2.0
+    }
+  },
+  "modes": [
+    "full",
+    "pitch_locked",
+    "collapsed"
+  ],
+  "duration_s": 24.0,
+  "analysis_start_s": 8.0,
+  "dt_s": 0.001,
+  "sample_dt_s": 0.01,
+  "convergence_cases": [
+    "G90",
+    "Gstress"
+  ],
+  "convergence_steps_s": [
+    0.002,
+    0.001,
+    0.0005
+  ],
+  "independent_solver": "DOP853; rtol=2e-10, atol=2e-12, max_step=0.005 s",
+  "state_order": [
+    "z",
+    "roll",
+    "pitch",
+    "zdot",
+    "rolldot",
+    "pitchdot",
+    "boundary_work",
+    "dissipation"
+  ],
+  "contact_order": [
+    "front_left",
+    "front_right",
+    "rear_left",
+    "rear_right"
+  ],
+  "limitations": "Prescribed gait; no measured carriers, foot-ground dynamics, horizontal forces, yaw, flexure, gait adaptation or fitted parameters."
+}

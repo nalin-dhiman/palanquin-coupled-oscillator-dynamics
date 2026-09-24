@@ -1,22 +1,71 @@
 # Technical guide
 
-[Back to the project overview](../README.md)
+[Back to the overview](../README.md)
 
-This guide contains the equations, numerical checks, local setup and video replay instructions. Run all commands from the repository root.
+## Walking model
 
-## Model and limits
+`python/walking_model.py` is the independent NumPy reference. `web/src/walking.js` implements the same equations with fixed-step RK4 in a Web Worker. `Session` supplies both incremental live calculations and batch runs; identical settings produce identical states irrespective of drawing frame rate or chunk boundaries. Edits create a new session. The UI terminates the old worker so stale results cannot replace a new run.
 
-`python/model.py` is the independent NumPy reference implementation. `web/src/model.js` ports the same finite-angle, two-degree-of-freedom equations to JavaScript. A dedicated Web Worker integrates with fixed-step fourth-order Runge–Kutta. World coordinates are x forward, y lateral, z up; saved quaternions are wxyz. The renderer reorders quaternion components explicitly for Three.js. No rendering state enters the solver.
+Coordinates are x forward, y right, z up. Contacts are ordered front-left, front-right, rear-left, rear-right; left means negative y. The body's generalised coordinates are z, roll φ and pitch θ. Rotation is **R = Ry(θ) Rx(φ)**. Horizontal translations and yaw are constrained. With contact offsets x = ±ℓ, y = ±a, and vertical body offset −h:
 
-Each support has a gated, clipped Kelvin–Voigt force: zero across a gap, otherwise the nonnegative spring-plus-damper force. The load-yielding controller uses filtered force state with rate and displacement bounds. Initial velocity/controller/work states are zero. Passive roll stiffness must be positive. The app rejects malformed configurations and time steps that are too large for the selected natural/decay rates; it stops trajectories exceeding its supported 60-degree roll or 2-m heave range. These are explorer limits, not measured physical failure thresholds.
+```text
+u          = y sin(φ) − h cos(φ)
+contact_z  = z − x sin(θ) + u cos(θ)
+A          = ∂contact_z/∂φ = cos(θ) [y cos(φ) + h sin(φ)]
+B          = ∂contact_z/∂θ = −x cos(θ) − u sin(θ)
+compression = support_z − contact_z
+N = 0 if compression ≤ 0, otherwise max(k compression + c compression_rate, 0)
 
-Statistics use the inclusive configured analysis interval. Heave RMS is about its sample mean; roll RMS is about zero. Contact loss counts samples when either support force is at most 1e-9 N. The work–energy residual measures numerical consistency, not agreement with a real apparatus. Plots auto-scale when needed; exports contain the unscaled values.
+J(φ)  = Iy cos²(φ) + Iz sin²(φ)
+J′(φ) = 2 (Iz − Iy) sin(φ) cos(φ)
+M z̈   = ΣN − Mg
+Ix φ̈  = Σ(A N) + ½ J′ θ̇²
+J θ̈   = Σ(B N) − J′ φ̇ θ̇
+```
 
-The rath mesh has unmeasured proportions and is only a rigid illustration of the computed pose. Its geometry does not set the simulation mass, COM, inertia or support locations. The apparatus has 39 original procedural components; no documentary photographs, copied ornament designs or third-party meshes are included. The model does not calculate human gait, pole bending, route choice, pitch, human/cloth deformation or empirical biomechanics. The original source-informed form is preserved in the geometry builder.
+Yaw inertia enters J even though yaw is constrained: the two finite rotations change the components of body angular velocity. The free-pitch mode retains these inertial coupling terms. Locked pitch sets θ and θ̇ to zero, implying an external constraint; it is a diagnostic comparison, not an extra passive support law.
 
-## Build locally
+For front/rear carrier j, the stride phase is αj = π fj t + χj + mj sin(2π fm t + νj). The parameter fj is **step cadence**, twice stride frequency. Vertical displacement is Aj cos(2αj); torso tilt is Ψj sin(αj). The two prescribed shoulder heights are:
 
-Node.js 18 or later is sufficient:
+```text
+b(j, side) = b0 + ramp(t) [Aj cos(2αj) + side sin(Ψj sin(αj))]
+side = −a or +a
+b0 = z0 − h + Mg/(4k)
+```
+
+The raised-cosine ramp lasts two seconds by default. Analytical derivatives include the ramp and phase-modulation derivatives. Torso sway is represented by a differential shoulder **height**, not horizontal translation. These harmonic inputs are illustrative, not recorded carrier trajectories or a human control law.
+
+In the collapsed comparison, front/rear heights and velocities are averaged on each side **before** the nonlinear contact law, and pitch is constrained. The internal four slots hold equal allocations of two resultants. UI force cards/arrows show the two summed resultants; individual peak loads are hidden. CSV prefixes the allocated patch-force columns with `allocated_` to prevent their interpretation as resolved shoulder loads.
+
+## Statistics, numerical scope and validation
+
+Statistics use the inclusive configured analysis interval (default 8 s onward). Before that interval the UI shows no estimated RMS or peak. Heave RMS is about mean height; roll/pitch RMS are about zero. Walking peak loads and zero-force fractions use **every integration step**, independent of the output interval. Zero force means N ≤ 1e-9 N and includes separation or clipped unloading. The displayed fraction counts contact–time samples, not time with *any* contact unloaded; the latter is a separate internal statistic. In collapsed mode identical pair allocations make this fraction equal to the two-resultant fraction.
+
+The state also integrates support work and dissipation. The residual is the change in body-plus-compressed-spring energy minus net boundary work. The maximum reported residual uses saved output samples. It checks numerical consistency, not empirical validity. Recontact can create nonsmooth force jumps. Cross-language parity at a fixed step does not establish pointwise convergence of these jumps. Use smaller time steps when inspecting contact-opening cases; do not treat browser peak loads as calibrated safety limits.
+
+Validation rejects malformed/unstable configurations, impossible principal-inertia triangles, reversed stride phases and integration steps too large for the selected natural/decay rates. Limits include 180 s duration, 0.05–2 ms integration steps, 1.5 million steps, 100,000 output intervals, ±30° initial angles, and a run stop at 60° roll/pitch or 2 m heave from z0. These are software limits, not measured human or apparatus limits. Some custom extremes may require a shorter duration or smaller step.
+
+The independent Python reference is published with its invariants and tests. `tests/walking-design.json` defines 7 inputs × 3 modes at 24 s; `tests/walking-reference.json` stores seeded samples and summary metrics regenerated by `python/make_walking_reference.py`, with a SHA-256 binding to the Python solver. JS tests compare all 21 cases, live/batch identity, timestep force-statistic sampling, a continuous 120 s run, gait derivatives, geometry, input validation and parameter sensitivity. The original JS/Python models and four original parity fixtures remain unchanged.
+
+For example, at the default physical parameters and quarter-stride forcing over 8–24 s, free pitch gives a maximum patch force of 160.290 N and zero zero-force samples; locking pitch gives 213.296 N and 11.651% zero-force contact–time samples. These are synthetic comparisons under specified inputs, not measurements or a universal benefit of allowing pitch.
+
+## Rendering and controls
+
+The browser consumes the solved z/roll/pitch pose. Saved quaternions are `(w,x,y,z)`; Three.js receives `(x,y,z,w)`. The GLB asset is explicitly converted from glTF Y-up to solver Z-up. There is no second dynamics engine in the renderer. Browser verification reads back 120 seeded world poses and all four world contact locations, plus all 39 original component origins, at a 2e-6 metre/radian tolerance.
+
+At 1×, the displayed pose equals the solver pose. At 3× or 5×, only heave displacement, roll and pitch are magnified about the neutral pose. Badges identify this presentation mode. Numerical readouts, graphs, statistics, trajectory exports and model state stay unscaled. Force arrows use 0.75 mm/N; support bars mark undeformed support references. Camera and playback speed affect presentation only.
+
+Live physics runs a little ahead of the playhead and stops requesting chunks while paused. Seeking can inspect the recorded prefix. Calculate full run prepares the entire configured duration for immediate seeking/export. Recorded trajectories are capped by the work limits above. Browser speed is device-dependent; a slow device may play below wall-clock speed while the fixed-step calculation remains consistent.
+
+The rath mesh is an original procedural illustration with unmeasured proportions. Its visible geometry does not determine inertia or contact locations. The contact view displays the actual numerical geometry. This model does not compute forward travel, horizontal contact forces, yaw, feet, pole flexure, gait adaptation, intention, or ritual experience.
+
+## Original two-support reference
+
+Schema version 1 uses `python/model.py` and `web/src/model.js`: heave and roll driven by two effective pole-side supports, with optional passive load yielding. Existing JSON configurations and CSV semantics remain supported. Its older zero-force statistic counts saved times when *either* support is unloaded; the UI labels this different definition. Its original small-angle, unilateral-force, energy and 120-second checks still run.
+
+## Build and reproduce
+
+Run from the repository root:
 
 ```bash
 npm ci --ignore-scripts
@@ -25,34 +74,34 @@ npm run build
 python3 -m http.server 8080 --directory dist
 ```
 
-Open `http://localhost:8080`. The build copies pinned Three.js modules locally, so the deployed app does not depend on a runtime CDN. `package-lock.json` pins dependencies.
-
-GitHub Pages publishes the root of the separate `interactive-site` branch, containing only the built app. To update it with an authorized GitHub login, run `npm run deploy`: the script runs the numerical tests, builds the app and pushes the static files through a temporary checkout. It never uploads the source checkout or generated research files as a website, never force-pushes, and preserves the site's commit history. In repository Settings → Pages, the source is **Deploy from a branch**, branch **interactive-site**, folder **/ (root)**. This approach does not require permission to create GitHub Actions workflow files.
-
-For the NumPy implementation, create a project-local environment:
+Open `http://localhost:8080`. Node.js 18+ works; pinned Three.js modules are copied locally, with no runtime CDN. For Python, use a project-local environment:
 
 ```bash
 python3 -m venv .venv
 .venv/bin/pip install -r python/requirements.txt
-.venv/bin/python -m pytest python/test_model.py
-.venv/bin/python python/run.py web/default-config.json generated/run.npz
+.venv/bin/python -m pytest python/test_model.py python/test_walking.py
+.venv/bin/python python/run_walking.py web/walking-default-config.json generated/walking.npz
+# Explicit regeneration, separate from checking the existing reference:
+.venv/bin/python python/make_walking_reference.py
 ```
 
-Do not install dependencies globally. The working implementation uses NumPy, not MuJoCo; adding a different engine would require a separate equivalence check.
+The original runner remains `python/run.py web/default-config.json generated/reference.npz`. No global Python installations are needed. Both solvers use NumPy, not MuJoCo; substituting a different engine requires its own equivalence test.
 
-## Verification
-
-`npm test` checks four independent NumPy reference trajectories (including irregular forcing and feedback), static equilibrium, unilateral contact, torque sign, the matched modal response, energy accounting, a continuous 120-second run, parameter sensitivity and invalid inputs. `tests/reference.json` records selected numerical samples and the hash of the independent Python implementation.
-
-`scripts/browser-smoke.mjs` checks UI behavior, exports, mobile layout and 120 random world poses. It also checks that all 39 GLB component origins return to their original coordinates after the explicit glTF Y-up to solver Z-up conversion. Set `APP_URL` to test a deployed site and `CHROME_PATH` to a Chromium executable. The test writes local screenshots and a report under ignored `test-results/`.
+Serve `dist/` on port 8087, or override `APP_URL`, then run browser checks with an existing Chromium:
 
 ```bash
-CHROME_PATH=/path/to/chromium node scripts/browser-smoke.mjs
+APP_URL=http://127.0.0.1:8087/ CHROME_PATH=/path/to/chromium npm run test:browser
 ```
 
-The default test URL is `http://127.0.0.1:8087/`; serve `dist/` on that port first or override `APP_URL`.
+The test covers live/pause/restart, stale-worker cancellation, comparison modes, magnification, exports, share links, malformed inputs, the original model, mobile overflow and numerical-to-3D transfer. Screenshots and reports go to ignored `test-results/`. The build content digest in that report binds it to the exact tested app. See [the recorded verification](verification.json).
 
-## Rebuild the mesh and the two-minute video
+## Publishing
+
+`interactive-main` holds source. GitHub Pages serves the root of the separate `interactive-site` branch. After changes, run numerical tests, build and browser verification before `npm run deploy`. Deployment refuses unverified app content and prohibited file types, then publishes through a temporary checkout without a force push. `npm run check:release` also checks the source publication list for manuscript/generated files. Neither the source checkout nor the private research directory is copied wholesale to the site. The existing `main` branch is preserved.
+
+## Existing two-support mesh and video tools
+
+These existing scripts render the original two-support model, not the walking extension.
 
 Blender is used only for geometry and replay; it does not calculate rigid-body dynamics. Use an installed Blender executable and check `blender --version`. The mesh can be regenerated without any private research files:
 

@@ -1,0 +1,48 @@
+{
+  "verified_date": "2026-09-24",
+  "scope": "Walking browser release; numerical and transform verification, not empirical validation.",
+  "javascript_tests": {
+    "passed": 41,
+    "walking_tests": 32,
+    "original_tests": 9
+  },
+  "python_tests": {
+    "passed": 19
+  },
+  "walking_reference_comparisons": 21,
+  "python_model_sha256": "0355bdfc1282f48050cde35927050e9b419a0805b1c8fb9169619b35b4632f2e",
+  "browser": {
+    "passed": true,
+    "build_sha256": "5b950d13dad79d1eb904a0fc1fa0bb97d767d3d589f2dd99f5aa8517d8c69a88",
+    "transfer": {
+      "random_frames": 120,
+      "position_error_m": 0,
+      "orientation_error_rad": 5.960464477539063e-08,
+      "contact_position_error_m": 2.482534153247273e-16,
+      "support_height_error_m": 0,
+      "mesh_origin_error_m": 3.3306690738754696e-16,
+      "matched_components": 39
+    },
+    "checks": [
+      "live physics advances and pauses",
+      "automatic restart on parameter edit",
+      "batch trajectory and stale-worker cancellation",
+      "120 seeded poses and four world contacts",
+      "39 original GLB component origins",
+      "magnification leaves physical results unchanged",
+      "front, side, top and orbit cameras",
+      "free/locked/collapsed pitch modes",
+      "individual loads hidden when unresolved",
+      "CSV/JSON export and share link reload",
+      "invalid JSON and unstable geometry rejection",
+      "original reference model compatibility",
+      "heave/roll/pitch presets",
+      "desktop/mobile no overflow or page errors"
+    ]
+  },
+  "limitations": [
+    "Prescribed shoulder motion; no adaptive human gait or forward travel.",
+    "Fixed-step parity does not establish pointwise convergence of recontact force spikes.",
+    "Illustrative rath mesh does not determine physical parameters."
+  ]
+}

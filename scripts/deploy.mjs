@@ -6,7 +6,7 @@ import {join} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const repo=fileURLToPath(new URL('..',import.meta.url));
 const run=(cmd,args,cwd=repo,capture=false)=>execFileSync(cmd,args,{cwd,encoding:'utf8',stdio:capture?['ignore','pipe','pipe']:'inherit'});
-run('npm',['test']);run('npm',['run','build']);
+run('npm',['test']);run('npm',['run','build']);run('npm',['run','check:release']);
 const origin=run('git',['remote','get-url','origin'],repo,true).trim();
 const existing=run('git',['ls-remote','--heads',origin,'interactive-site'],repo,true).trim();
 const temp=await mkdtemp(join(tmpdir(),'rath-pages-'));const site=join(temp,'site');
