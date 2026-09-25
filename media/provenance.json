@@ -1,0 +1,13 @@
+{
+  "title": "Rath: research overview",
+  "source": "Video supplied by the project author",
+  "original_filename": "The_Mechanics_of_the_Rath__Pacing_and_Pacing_in_Himalayan_Ritua.mp4",
+  "file": "rath-overview.mp4",
+  "sha256": "16bcc42640708627aa3b34f798817bf3f921db62569b06b0e34139bf93b58042",
+  "size_bytes": 38927053,
+  "duration_seconds": 273.298866,
+  "content_preserved": true,
+  "role": "Explanatory overview with schematic diagrams; implementation notes accompany the player. This is separate from the numerically verified Blender trajectory replay.",
+  "poster_frame_seconds": 164,
+  "published_copy_prepared": "2026-09-25"
+}

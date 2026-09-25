@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#193e3c">
+<meta name="author" content="Nalin Dhiman">
+<meta name="description" content="An explanatory video for Rath, a research project on collective carrying by Nalin Dhiman, IIT Mandi, with notes on the implemented mechanical model.">
+<title>Rath · Research overview</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<header class="top"><a class="brand" href="./"><span class="mark" aria-hidden="true">∿</span><span>Rath <em>Research simulation</em></span></a><nav class="site-nav" aria-label="Project navigation"><a href="./">Simulation</a><a href="https://github.com/nalin-dhiman/palanquin-coupled-oscillator-dynamics/tree/interactive-main" target="_blank" rel="noopener">Source code ↗</a></nav></header>
+<main class="overview-page">
+  <section class="intro"><div><p class="eyebrow">RESEARCH COMMUNICATION</p><h1>Rath: a research overview</h1><p>An introduction to carrying, support timing and the distribution of mechanical loads.</p></div></section>
+  <section class="research-context" aria-label="Research purpose and authorship"><div><h2>Research purpose</h2><p>This project's sole purpose is scientific research into collective carrying. The model examines how prescribed shoulder inputs produce motion and contact forces.</p></div><div class="research-author"><strong>Nalin Dhiman</strong><span>School of Computing and Electrical Engineering<br>Indian Institute of Technology Mandi, India</span></div></section>
+  <section class="panel video-panel" aria-labelledby="video-heading">
+    <div class="video-heading"><h2 id="video-heading">Explanatory video <span>4 min 33 s</span></h2><p>The supplied video combines the two-support reference model and the four-contact walking extension. Some schematic details differ from the implementation; the notes below identify these differences.</p></div>
+    <video id="research-video" controls playsinline preload="metadata" poster="./media/rath-overview-poster.jpg" aria-label="Rath research overview video" aria-describedby="video-description">
+      <source src="./media/rath-overview.mp4" type="video/mp4">
+      Your browser does not support embedded video. <a href="./media/rath-overview.mp4">Open the MP4 file</a>.
+    </video>
+    <p id="video-description" class="video-description">An explanatory presentation supplied for this project, distinct from the numerically verified Blender trajectory replay. <a href="./media/rath-overview.mp4" download>Download the video (37.1 MiB)</a>.</p>
+  </section>
+  <section class="panel overview-notes" aria-labelledby="model-notes">
+    <h2 id="model-notes">Notes on the implemented model</h2>
+    <ul>
+      <li><strong>Inputs and contacts, approximately 0:20–1:20.</strong> The model prescribes shoulder-support heights and calculates the resulting contact forces. It does not apply measured foot–ground forces. The reference model's two supports represent pole-side resultants, rather than two feet or necessarily two people.</li>
+      <li><strong>Roll equation, approximately 1:40.</strong> The equation displayed in the video differs from the reference solver. With left and right body-frame contacts at −<var>a</var> and +<var>a</var>, the implemented moment about the centre of mass is:
+        <p class="equation">τ<sub>x</sub> = <var>a</var> cos θ (<var>N</var><sub>R</sub> − <var>N</var><sub>L</sub>) + <var>h</var> sin θ (<var>N</var><sub>L</sub> + <var>N</var><sub>R</sub>).</p>
+        Gravity acts through the centre of mass, so there is no separate gravitational moment about that point. Here θ is the reference model's roll angle; the walking extension uses φ for roll and θ for pitch. The <a href="https://github.com/nalin-dhiman/palanquin-coupled-oscillator-dynamics/blob/interactive-main/web/src/model.js">reference solver</a> gives the full contact geometry and equation.</li>
+      <li><strong>Illustrations and interpretation.</strong> The architectural sketches and dimension labels are illustrative. The simulator uses assumed geometry and material properties, with vertical movement, roll and pitch as its three body motions. Horizontal travel, yaw, foot dynamics and participants' intentions are outside this model. Numerical values in different video examples correspond to different prescribed inputs.</li>
+    </ul>
+    <p>For reproducible calculations, use the <a href="./">interactive simulation</a>, its parameter exports and the <a href="https://github.com/nalin-dhiman/palanquin-coupled-oscillator-dynamics/blob/interactive-main/docs/technical-guide.md">technical guide</a>.</p>
+  </section>
+  <footer>Rath · Nalin Dhiman, IIT Mandi <span>Research overview · Supplied video retained in its original form.</span></footer>
+</main>
+</body>
+</html>

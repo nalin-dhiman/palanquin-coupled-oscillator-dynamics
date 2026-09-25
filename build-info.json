@@ -1,5 +1,5 @@
 {
-  "sha256": "5b950d13dad79d1eb904a0fc1fa0bb97d767d3d589f2dd99f5aa8517d8c69a88",
+  "sha256": "90868d49ffccf3a801e61b1a9d9203201baa60a4713ecc23e913086979a13842",
   "files": [
     {
       "path": ".nojekyll",
@@ -19,11 +19,27 @@
     },
     {
       "path": "index.html",
-      "sha256": "50bc509fc89240a25246c50916ba0dc9886b211a235db52262ae436ff15ecd3f"
+      "sha256": "a9720c892026a4d426024eeb3e8b334856d9e7cc2d866b2e214b2c0d89886119"
+    },
+    {
+      "path": "media/provenance.json",
+      "sha256": "70b47b41264f44467688961e1f08eef5cc95a4e095f1f1802e3cce9b0ed57d35"
+    },
+    {
+      "path": "media/rath-overview-poster.jpg",
+      "sha256": "ee397558d540988831af393432c11e0c7533882d44024a21bb210e6bc5e0ede2"
+    },
+    {
+      "path": "media/rath-overview.mp4",
+      "sha256": "16bcc42640708627aa3b34f798817bf3f921db62569b06b0e34139bf93b58042"
+    },
+    {
+      "path": "overview.html",
+      "sha256": "adb7ff2eb67a0dcf0e4740678c39e039f392a715048e7b9a4996be831a339693"
     },
     {
       "path": "src/app.js",
-      "sha256": "5d61c3fa6832d3eb63c3c2eee42b7a6869a9f7ec5e0339ad29cc50ea9082ee4e"
+      "sha256": "c76e67ba956b752be6762f62809c844e87c97aacf8c775015611f5283586026c"
     },
     {
       "path": "src/model.js",
@@ -47,7 +63,7 @@
     },
     {
       "path": "style.css",
-      "sha256": "56b375f9445fddb981f88717db019de697b0e293d34e5dc9d945051d09b3fd03"
+      "sha256": "cb9d713b011bf482fbfc06dd191d368f8ee46855ff8bcec3a60e9eb99c8d95e1"
     },
     {
       "path": "vendor/three/LICENSE",
