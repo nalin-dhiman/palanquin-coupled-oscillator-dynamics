@@ -1,19 +1,23 @@
 {
-  "verified_date": "2026-09-24",
-  "scope": "Walking browser release; numerical and transform verification, not empirical validation.",
+  "verified_date": "2026-09-25",
+  "scope": "Rath presentation and supplied overview release; numerical consistency, transform transfer, browser interaction and video playback checks.",
   "javascript_tests": {
     "passed": 41,
     "walking_tests": 32,
-    "original_tests": 9
+    "original_tests": 9,
+    "verified_date": "2026-09-25",
+    "test_files": 2
   },
   "python_tests": {
-    "passed": 19
+    "passed": 19,
+    "verified_date": "2026-09-24",
+    "note": "Previously verified; Python solver and fixtures are unchanged in this presentation update."
   },
   "walking_reference_comparisons": 21,
   "python_model_sha256": "0355bdfc1282f48050cde35927050e9b419a0805b1c8fb9169619b35b4632f2e",
   "browser": {
     "passed": true,
-    "build_sha256": "5b950d13dad79d1eb904a0fc1fa0bb97d767d3d589f2dd99f5aa8517d8c69a88",
+    "build_sha256": "90868d49ffccf3a801e61b1a9d9203201baa60a4713ecc23e913086979a13842",
     "transfer": {
       "random_frames": 120,
       "position_error_m": 0,
@@ -23,8 +27,20 @@
       "mesh_origin_error_m": 3.3306690738754696e-16,
       "matched_components": 39
     },
+    "video": {
+      "passed": true,
+      "duration_seconds": 273.298866,
+      "width": 1280,
+      "height": 720,
+      "autoplay": false,
+      "controls": true,
+      "playsinline": true,
+      "playback_verified": true,
+      "seek_verified_at_seconds": 164,
+      "mobile_no_overflow": true
+    },
     "checks": [
-      "live physics advances and pauses",
+      "live simulation advances and pauses",
       "automatic restart on parameter edit",
       "batch trajectory and stale-worker cancellation",
       "120 seeded poses and four world contacts",
@@ -37,12 +53,31 @@
       "invalid JSON and unstable geometry rejection",
       "original reference model compatibility",
       "heave/roll/pitch presets",
-      "desktop/mobile no overflow or page errors"
-    ]
+      "desktop/mobile no overflow or page errors",
+      "Rath identity, research purpose and attribution visible",
+      "simulator does not preload the overview video",
+      "overview video metadata, decoding, playback and seeking",
+      "overview navigation and mobile layout"
+    ],
+    "preview_transport": "Local static server with HTTP byte-range support",
+    "browser": "Installed Chromium with H.264/AAC support"
   },
   "limitations": [
     "Prescribed shoulder motion; no adaptive human gait or forward travel.",
     "Fixed-step parity does not establish pointwise convergence of recontact force spikes.",
     "Illustrative rath mesh does not determine physical parameters."
-  ]
+  ],
+  "overview_video": {
+    "title": "Rath: research overview",
+    "source": "Video supplied by the project author",
+    "original_filename": "The_Mechanics_of_the_Rath__Pacing_and_Pacing_in_Himalayan_Ritua.mp4",
+    "file": "rath-overview.mp4",
+    "sha256": "16bcc42640708627aa3b34f798817bf3f921db62569b06b0e34139bf93b58042",
+    "size_bytes": 38927053,
+    "duration_seconds": 273.298866,
+    "content_preserved": true,
+    "role": "Explanatory overview with schematic diagrams; implementation notes accompany the player. This is separate from the numerically verified Blender trajectory replay.",
+    "poster_frame_seconds": 164,
+    "published_copy_prepared": "2026-09-25"
+  }
 }

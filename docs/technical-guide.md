@@ -55,13 +55,13 @@ The browser consumes the solved z/roll/pitch pose. Saved quaternions are `(w,x,y
 
 At 1×, the displayed pose equals the solver pose. At 3× or 5×, only heave displacement, roll and pitch are magnified about the neutral pose. Badges identify this presentation mode. Numerical readouts, graphs, statistics, trajectory exports and model state stay unscaled. Force arrows use 0.75 mm/N; support bars mark undeformed support references. Camera and playback speed affect presentation only.
 
-Live physics runs a little ahead of the playhead and stops requesting chunks while paused. Seeking can inspect the recorded prefix. Calculate full run prepares the entire configured duration for immediate seeking/export. Recorded trajectories are capped by the work limits above. Browser speed is device-dependent; a slow device may play below wall-clock speed while the fixed-step calculation remains consistent.
+Live simulation runs a little ahead of the playhead and stops requesting chunks while paused. Seeking can inspect the recorded prefix. Calculate full run prepares the entire configured duration for immediate seeking/export. Recorded trajectories are capped by the work limits above. Browser speed is device-dependent; a slow device may play below wall-clock speed while the fixed-step calculation remains consistent.
 
 The rath mesh is an original procedural illustration with unmeasured proportions. Its visible geometry does not determine inertia or contact locations. The contact view displays the actual numerical geometry. This model does not compute forward travel, horizontal contact forces, yaw, feet, pole flexure, gait adaptation, intention, or ritual experience.
 
 ## Original two-support reference
 
-Schema version 1 uses `python/model.py` and `web/src/model.js`: heave and roll driven by two effective pole-side supports, with optional passive load yielding. Existing JSON configurations and CSV semantics remain supported. Its older zero-force statistic counts saved times when *either* support is unloaded; the UI labels this different definition. Its original small-angle, unilateral-force, energy and 120-second checks still run.
+Schema version 1 uses `python/model.py` and `web/src/model.js`: heave and roll driven by two effective pole-side supports, with an optional bounded load-yielding feedback rule. Existing JSON configurations and CSV semantics remain supported. Its older zero-force statistic counts saved times when *either* support is unloaded; the UI labels this different definition. Its original small-angle, unilateral-force, energy and 120-second checks still run.
 
 ## Build and reproduce
 
@@ -87,17 +87,25 @@ python3 -m venv .venv
 
 The original runner remains `python/run.py web/default-config.json generated/reference.npz`. No global Python installations are needed. Both solvers use NumPy, not MuJoCo; substituting a different engine requires its own equivalence test.
 
-Serve `dist/` on port 8087, or override `APP_URL`, then run browser checks with an existing Chromium:
+Serve `dist/` on port 8087, or override `APP_URL`, then run browser checks with an existing Chromium that supports H.264/AAC video (some bundled test browsers omit these codecs):
 
 ```bash
 APP_URL=http://127.0.0.1:8087/ CHROME_PATH=/path/to/chromium npm run test:browser
 ```
 
+Video-seeking checks also require HTTP byte-range support, as provided by GitHub Pages. Python’s basic `http.server` is suitable for the simulator but does not provide byte ranges; use a range-capable static preview server or set `APP_URL` to the deployed site for the complete browser check.
+
 The test covers live/pause/restart, stale-worker cancellation, comparison modes, magnification, exports, share links, malformed inputs, the original model, mobile overflow and numerical-to-3D transfer. Screenshots and reports go to ignored `test-results/`. The build content digest in that report binds it to the exact tested app. See [the recorded verification](verification.json).
 
 ## Publishing
 
-`interactive-main` holds source. GitHub Pages serves the root of the separate `interactive-site` branch. After changes, run numerical tests, build and browser verification before `npm run deploy`. Deployment refuses unverified app content and prohibited file types, then publishes through a temporary checkout without a force push. `npm run check:release` also checks the source publication list for manuscript/generated files. Neither the source checkout nor the private research directory is copied wholesale to the site. The existing `main` branch is preserved.
+`interactive-main` holds source. GitHub Pages serves the root of the separate `interactive-site` branch. After changes, run numerical tests, build and browser verification before `npm run deploy`. Deployment refuses unverified app content and prohibited file types, then publishes through a temporary checkout without a force push. `npm run check:release` also checks the source publication list for manuscript/generated files. The single exception is the author-supplied `web/media/rath-overview.mp4`, checked against its provenance SHA-256 and a 50-MiB size limit. Neither the source checkout nor the private research directory is copied wholesale to the site. The existing `main` branch is preserved.
+
+## Supplied research overview
+
+`overview.html` presents a 4-minute 33-second explanatory video alongside explicit notes on differences between its schematic diagrams and the implementation. The player provides native playback, seeking and download controls. It is separate from the simulator, so opening the simulation does not download the video. Browser checks verify metadata, decoding, playback, seeking, page links and mobile layout.
+
+The video bytes are retained exactly as supplied. `web/media/provenance.json` records their SHA-256, duration and source filename; the poster is extracted at 164 seconds. The overview is distinct from the verified numerical replay described below. Its roll-equation correction refers to `contacts()` and `rhs()` in `web/src/model.js`; the stated moment is about the centre of mass with body-frame lateral contacts at −a and +a. The reference model uses θ for roll; the walking model uses φ for roll and θ for pitch.
 
 ## Existing two-support mesh and video tools
 

@@ -18,6 +18,6 @@ try{
  for(const key of ['user.name','user.email'])run('git',['config',key,run('git',['config',key],repo,true).trim()],site);
  run('git',['add','--all'],site);
  const changed=run('git',['status','--porcelain'],site,true).trim();
- if(changed){run('git',['commit','-m','Publish tested interactive lab'],site);run('git',['push','origin','HEAD:interactive-site'],site);}
+ if(changed){run('git',['commit','-m','Publish verified Rath research site'],site);run('git',['push','origin','HEAD:interactive-site'],site);}
  else console.log('The published app is already current.');
 }finally{await rm(temp,{recursive:true,force:true});}

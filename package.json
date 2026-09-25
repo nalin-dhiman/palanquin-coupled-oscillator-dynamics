@@ -1,9 +1,9 @@
 {
-  "name": "rath-dynamics-lab",
+  "name": "rath",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Live walking-informed heave, roll and pitch with four shoulder contacts",
+  "description": "Research simulation of collective carrying, heave, roll, pitch and shoulder-contact loads",
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",

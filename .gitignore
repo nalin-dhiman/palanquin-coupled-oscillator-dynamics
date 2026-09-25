@@ -26,3 +26,6 @@ outputs/
 
 # Reviewed screenshots used by the repository documentation.
 !/docs/images/*.png
+
+# The single author-supplied overview video is explicitly approved for publication.
+!/web/media/rath-overview.mp4

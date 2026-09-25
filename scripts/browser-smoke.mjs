@@ -7,6 +7,11 @@ const browser=await chromium.launch({headless:true,executablePath:process.env.CH
 try{
  const page=await browser.newPage({viewport:{width:1440,height:1100}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base,{waitUntil:'networkidle'});await page.waitForFunction(()=>window.rathLab?.getRun()&&window.rathLab.getViewer()?.asset,{timeout:60000});
+ assert.equal(await page.title(),'Rath · Research simulation');
+ assert.match(await page.locator('.research-context').textContent(),/sole purpose is scientific research/);
+ assert.match(await page.locator('#scope').textContent(),/Nalin Dhiman, IIT Mandi/);
+ assert.equal(await page.locator('.site-nav a').first().getAttribute('href'),'./overview.html');
+ assert.equal(await page.evaluate(()=>performance.getEntriesByType('resource').some(r=>r.name.endsWith('.mp4'))),false);
  assert.equal(await page.locator('#asset-status').textContent(),'');
  const manifestResponse=await page.request.get(new URL('build-info.json',base).href);assert.ok(manifestResponse.ok());const manifest=await manifestResponse.json();
  assert.equal(sha256(JSON.stringify(manifest.files)),manifest.sha256);
@@ -49,7 +54,22 @@ try{
  await page.selectOption('#model-family','walking');await page.waitForFunction(()=>window.rathLab.getRun()?.config.model==='walking');
  for(const [id,camera] of [['walk-heave','three-quarter'],['walk-roll','front'],['walk-pitch','side']]){await page.click(`[data-preset="${id}"]`);await page.waitForFunction(()=>window.rathLab.getRun()?.config.model==='walking');if(id!=='walk-heave')assert.equal(await page.locator('#camera').inputValue(),camera);}
  await page.click('#view-rath');await page.setViewportSize({width:390,height:844});await page.waitForTimeout(250);await page.screenshot({path:output+'/mobile.png',fullPage:true});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.click('#toggle-settings');assert.equal(await page.locator('#parameters').isVisible(),true);assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ const overview=await browser.newPage({viewport:{width:1200,height:900}});overview.on('pageerror',e=>errors.push(e.message));
+ await overview.goto(new URL('overview.html',base).href,{waitUntil:'networkidle'});
+ assert.equal(await overview.title(),'Rath · Research overview');
+ const media=overview.locator('#research-video');
+ assert.notEqual(await media.evaluate(v=>v.canPlayType('video/mp4; codecs="avc1.64001f, mp4a.40.2"')),'','Video checks require a browser with H.264/AAC support; set CHROME_PATH to an installed compatible browser.');
+ await overview.waitForFunction(()=>document.querySelector('video').readyState>=1,null,{timeout:30000});
+ const metadata=await media.evaluate(v=>({duration_seconds:v.duration,width:v.videoWidth,height:v.videoHeight,autoplay:v.autoplay,controls:v.controls,playsinline:v.playsInline}));
+ assert.ok(Math.abs(metadata.duration_seconds-273.298866)<.1);assert.equal(metadata.width,1280);assert.equal(metadata.height,720);assert.equal(metadata.autoplay,false);assert.equal(metadata.controls,true);assert.equal(metadata.playsinline,true);
+ await media.evaluate(async v=>{v.muted=true;await v.play();});await overview.waitForFunction(()=>document.querySelector('video').currentTime>.3);
+ await media.evaluate(v=>{v.pause();v.currentTime=164;});await overview.waitForFunction(()=>{const v=document.querySelector('video');return !v.seeking&&Math.abs(v.currentTime-164)<.1&&v.readyState>=2;});
+ assert.match(await overview.locator('#model-notes').textContent(),/implemented model/);
+ assert.equal(await overview.locator('.site-nav a').first().getAttribute('href'),'./');
+ await overview.screenshot({path:output+'/video-desktop.png',fullPage:true});
+ await overview.setViewportSize({width:390,height:844});await overview.screenshot({path:output+'/video-mobile.png',fullPage:true});assert.ok(await overview.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+ const video={passed:true,...metadata,playback_verified:true,seek_verified_at_seconds:164,mobile_no_overflow:true};await overview.close();
  assert.deepEqual(errors,[]);
- await writeFile(output+'/browser-check.json',JSON.stringify({passed:true,url:base,build_sha256:manifest.sha256,transfer,checks:['live physics advances and pauses','automatic restart on parameter edit','batch trajectory and stale-worker cancellation','120 seeded poses and four world contacts','39 original GLB component origins','magnification leaves physical results unchanged','front, side, top and orbit cameras','free/locked/collapsed pitch modes','individual loads hidden when unresolved','CSV/JSON export and share link reload','invalid JSON and unstable geometry rejection','original reference model compatibility','heave/roll/pitch presets','desktop/mobile no overflow or page errors']},null,2));
- console.log(JSON.stringify({passed:true,transfer}));
+ await writeFile(output+'/browser-check.json',JSON.stringify({passed:true,url:base,build_sha256:manifest.sha256,transfer,video,checks:['live simulation advances and pauses','automatic restart on parameter edit','batch trajectory and stale-worker cancellation','120 seeded poses and four world contacts','39 original GLB component origins','magnification leaves physical results unchanged','front, side, top and orbit cameras','free/locked/collapsed pitch modes','individual loads hidden when unresolved','CSV/JSON export and share link reload','invalid JSON and unstable geometry rejection','original reference model compatibility','heave/roll/pitch presets','desktop/mobile no overflow or page errors','Rath identity, research purpose and attribution visible','simulator does not preload the overview video','overview video metadata, decoding, playback and seeking','overview navigation and mobile layout']},null,2));
+ console.log(JSON.stringify({passed:true,transfer,video}));
 }finally{await browser.close();}
